@@ -13,6 +13,12 @@ class Snake(arcade.Window):
 
         arcade.set_background_color(arcade.color.BLACK)
 
+        self.set_update_rate(0.15)
+
+        self.setup()
+
+    def setup(self):
+
         self.direction_x = move_speed
         self.direction_y = 0
 
@@ -25,9 +31,10 @@ class Snake(arcade.Window):
         self.snake_body = []
         self.snake_length = 1
 
-        self.set_update_rate(0.15)
+        self.score = 0
 
         self.game_over = False
+
 
     def on_draw(self):
         self.clear()
@@ -52,6 +59,20 @@ class Snake(arcade.Window):
             arcade.color.RED
         )
 
+        arcade.draw_text(
+            f"score: {self.score}", 10, height - 30, arcade.color.WHITE, 20
+        )
+
+        if self.game_over:
+
+            arcade.draw_text("Press R to restart",
+                            width // 2,
+                            height // 2 - 20,
+                            arcade.color.WHITE,
+                            20,
+                            anchor_x = "center"
+                            )
+
 
     def on_update(self, delta_time):
         if self.game_over: return
@@ -61,7 +82,7 @@ class Snake(arcade.Window):
         if self.snake_x == self.food_x and self.snake_y == self.food_y: 
             self.food_x = random.randrange(0, width, grid_size)
             self.food_y = random.randrange(0, height, grid_size)
-
+            self.score += 1
             self.snake_length += 1
 
         self.snake_body.append((self.snake_x, self.snake_y))
@@ -82,6 +103,9 @@ class Snake(arcade.Window):
             self.game_over = True
 
     def on_key_press(self, key, modifiers):
+
+        if self.game_over and key == arcade.key.R:
+            self.setup()
 
         if key == arcade.key.UP:
             self.direction_x = 0
