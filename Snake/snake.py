@@ -2,7 +2,7 @@ import arcade
 
 width = 800
 height = 600
-move_speed = 5
+move_speed = 2.5
 
 class Snake(arcade.Window):
 
@@ -10,6 +10,9 @@ class Snake(arcade.Window):
         super().__init__(width, height, "Snake")
 
         arcade.set_background_color(arcade.color.BLACK)
+
+        self.direction_x = move_speed
+        self.direction_y = 0
 
         self.snake_x = width // 2
         self.snake_y = height // 2
@@ -25,19 +28,28 @@ class Snake(arcade.Window):
             arcade.color.GREEN
         )
 
+
+    def on_update(self, delta_time):
+        self.snake_x += self.direction_x
+        self.snake_y += self.direction_y
+
     def on_key_press(self, key, modifiers):
 
         if key == arcade.key.UP:
-            self.snake_y += move_speed
+            self.direction_x = 0
+            self.direction_y = move_speed
 
         elif key == arcade.key.DOWN:
-            self.snake_y -= move_speed
+            self.direction_x = 0
+            self.direction_y = -move_speed
 
         elif key == arcade.key.LEFT:
-            self.snake_x -= move_speed
+            self.direction_x = -move_speed
+            self.direction_y = 0
 
         elif key == arcade.key.RIGHT:
-            self.snake_x += move_speed
+            self.direction_x = move_speed
+            self.direction_y = 0
 
 game = Snake()
 arcade.run()
