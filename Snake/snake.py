@@ -1,4 +1,4 @@
-import arcade
+import arcade #type: ignore // added this because it said there was a missing pylance import
 import random
 
 grid_size = 20
